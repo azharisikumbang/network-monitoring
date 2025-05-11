@@ -41,4 +41,34 @@ export interface User {
     updated_at: string;
 }
 
+export interface PaginationType {
+    current_page: number;
+    data: any;
+    first_page_url: string;
+    form: number;
+    last_page: number;
+    last_page_url: string;
+    links: PaginationLinkType[];
+    next_page_url: string | null;
+    path: string;
+    per_page: number;
+    prev_page_url: string | null;
+    to: number;
+    total: number;
+}
+
+export interface PaginationLinkType {
+    url: string | null;
+    label: string;
+    active: boolean;
+}
+
+export interface ViewIndexData {
+    params: {
+        search: string | undefined;
+        limit: number;
+    };
+    data: PaginationType;
+}
+
 export type BreadcrumbItemType = BreadcrumbItem;

@@ -5,7 +5,7 @@ import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type Nav, type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { AlertCircle, BookOpen, House, LayoutGrid, MapPinned, Monitor, Router, ShieldCheck, Ticket, Users } from 'lucide-vue-next';
+import { AlertCircle, BookOpen, Download, House, LayoutGrid, MapPinned, Monitor, Router, ShieldCheck, Ticket, Upload, Users } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
 const mainNavItems: Nav = {
@@ -53,12 +53,12 @@ const masterDataNavItems: Nav = {
             icon: Router,
         },
         {
-            title: 'users',
+            title: 'Users',
             href: '/users',
             icon: Users,
         },
         {
-            title: 'roles',
+            title: 'Roles and Permissions',
             href: '/roles',
             icon: ShieldCheck,
         },
@@ -71,12 +71,12 @@ const reportsNavItems: Nav = {
         {
             title: 'Export',
             href: '/export',
-            icon: MapPinned,
+            icon: Download,
         },
         {
             title: 'Import',
             href: '/import',
-            icon: MapPinned,
+            icon: Upload,
         },
     ],
 };
