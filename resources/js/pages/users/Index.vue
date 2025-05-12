@@ -15,11 +15,15 @@ import TableHead from '@/components/ui/table/TableHead.vue';
 import TableHeader from '@/components/ui/table/TableHeader.vue';
 import TableRow from '@/components/ui/table/TableRow.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { PaginationType, ViewIndexData, type BreadcrumbItem } from '@/types';
+import { ViewIndexData, type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/vue3';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-vue-next';
 import { DialogClose } from 'reka-ui';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+import ButtonLink from '@/components/ButtonLink.vue';
+import ButtonEdit from '@/components/ui/button/ButtonEdit.vue';
+import Alert from '@/components/ui/alert/Alert.vue';
+import AlertTitle from '@/components/ui/alert/AlertTitle.vue';
+import AlertDescription from '@/components/ui/alert/AlertDescription.vue';
 
 const props = defineProps<ViewIndexData>();
 
@@ -29,8 +33,6 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/users',
     },
 ];
-
-console.log(props);
 
 const form = useForm({
     search: props.params.search,
@@ -49,6 +51,13 @@ const changePageLimit = () => formLimit.get(route('users.index'));
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="p-4">
+            <div class="mb-4" v-if="flash.success">
+                <Alert variant="success">
+                    <AlertTitle>Success !</AlertTitle>
+                    <AlertDescription>{{ flash.success }}</AlertDescription>
+                </Alert>
+            </div>
+
             <div class="flex justify-between">
                 <form @submit.prevent="submit">
                     <div class="flex gap-1">
@@ -61,6 +70,8 @@ const changePageLimit = () => formLimit.get(route('users.index'));
                         <Button v-if="props.params.search" as="a" :href="route('users.index')" variant="destructive">Batal</Button>
                     </div>
                 </form>
+
+                <ButtonLink :href="route('users.create')">Create New User</ButtonLink>
             </div>
             <Table class="my-4 rounded-lg border p-8">
                 <TableHeader>
@@ -82,14 +93,9 @@ const changePageLimit = () => formLimit.get(route('users.index'));
                         <TableCell>y</TableCell>
                         <TableCell class="text-right">
                             <div class="flex justify-end gap-2">
-                                <Button
-                                    as="a"
-                                    :href="route('users.edit', { id: user.id })"
-                                    class="hover:bg-yellow-500 hover:text-white"
-                                    variant="outline"
-                                >
+                                <ButtonEdit :href="route('users.edit', { id: user.id })">
                                     <span class="hidden sm:block">Edit</span>
-                                </Button>
+                                </ButtonEdit>
                                 <Dialog>
                                     <DialogTrigger as-child>
                                         <Button class="hover:bg-red-700 hover:text-white" variant="outline">
@@ -126,7 +132,7 @@ const changePageLimit = () => formLimit.get(route('users.index'));
                 </TableBody>
             </Table>
 
-            <div class="mt-8 flex items-center justify-between">
+            <div class="mt-2 flex items-center justify-between">
                 <div class="flex items-center gap-2 text-sm">
                     Shown
                     <select v-model="formLimit.limit" @change="changePageLimit" class="cursor-pointer">
@@ -138,14 +144,14 @@ const changePageLimit = () => formLimit.get(route('users.index'));
                     of {{ data.total }} items.
                 </div>
                 <div class="flex items-center gap-2">
-                    <Button v-if="data.prev_page_url" as="a" :href="data.prev_page_url" class="cursor-pointer" :disabled="data.prev_page_url">
+                    <ButtonLink v-if="data.prev_page_url" :href="data.prev_page_url" :disabled="data.prev_page_url">
                         <ChevronLeftIcon />
                         <span class="hidden sm:block">Previous</span>
-                    </Button>
-                    <Button v-if="data.next_page_url" as="a" :href="data.next_page_url" class="cursor-pointer">
+                    </ButtonLink>
+                    <ButtonLink v-if="data.next_page_url" :href="data.next_page_url">
                         <span class="hidden sm:block">Next</span>
                         <ChevronRightIcon />
-                    </Button>
+                    </ButtonLink>
                 </div>
             </div>
         </div>

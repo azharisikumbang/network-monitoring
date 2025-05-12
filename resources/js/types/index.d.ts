@@ -69,6 +69,15 @@ export interface ViewIndexData {
         limit: number;
     };
     data: PaginationType;
+    flash: {
+        success: any;
+    };
+}
+
+export interface UserEditForm {
+    id: int;
+    email: string;
+    name: string;
 }
 
 export type BreadcrumbItemType = BreadcrumbItem;

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\CreateUserRequest;
+use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Response\IndexViewDataResponse;
 use App\Models\User;
+use Hash;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -37,15 +40,22 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('users/Create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateUserRequest $request)
     {
-        //
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        return to_route('users.index')
+            ->with('success', "User '{$user->name}' created succeesfully.");
     }
 
     /**
@@ -61,15 +71,23 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return Inertia::render("users/Edit", [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        $user->update($request->validated());
+        $user->refresh();
+
+        return to_route('users.index')
+            ->with('success', "User '{$user->email}' updated succeesfully.");
     }
 
     /**
