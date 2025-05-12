@@ -36,5 +36,8 @@ class DatabaseSeeder extends Seeder
                 'role' => User::ROLE_TECHNICIAN
             ]
         ]);
+
+        // branches
+        $this->call(BranchSeeder::class);
     }
 }
