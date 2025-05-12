@@ -56,7 +56,7 @@ const submit = () => form.post(route('branches.store'));
                         <div class="grid gap-2">
                             <Label for="name">Province</Label>
                             <Select v-model="form.province" required>
-                                <option disabled selected>-- Branch Location --</option>
+                                <option value="" disabled selected>-- Branch Location --</option>
                                 <template v-for="(prov, index) in getListProvinces()">
                                     <option :value="prov.as">{{ prov.as }}</option>
                                 </template>
