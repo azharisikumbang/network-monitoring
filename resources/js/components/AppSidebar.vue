@@ -15,21 +15,25 @@ const mainNavItems: Nav = {
             title: 'Dashboard',
             href: '/dashboard',
             icon: LayoutGrid,
+            role: 'all',
         },
         {
             title: 'Monitor',
             href: '/monitor',
             icon: Monitor,
+            role: 'all',
         },
         {
             title: 'Issues',
             href: '/issues',
             icon: AlertCircle,
+            role: 'all',
         },
         {
             title: 'Ticket',
             href: '/tickets',
             icon: Ticket,
+            role: 'all',
         },
     ],
 };
@@ -41,26 +45,31 @@ const masterDataNavItems: Nav = {
             title: 'Branches',
             href: '/branches',
             icon: MapPinned,
+            role: 'all',
         },
         {
             title: 'Sites',
             href: '/sites',
             icon: House,
+            role: 'all',
         },
         {
             title: 'Nodes / Devices',
             href: '/nodes',
             icon: Router,
+            role: 'all',
         },
         {
             title: 'Users',
             href: '/users',
             icon: Users,
+            role: 'administrator',
         },
         {
             title: 'Roles and Permissions',
             href: '/roles',
             icon: ShieldCheck,
+            role: 'administrator',
         },
     ],
 };
@@ -72,11 +81,13 @@ const reportsNavItems: Nav = {
             title: 'Export',
             href: '/export',
             icon: Download,
+            role: 'all',
         },
         {
             title: 'Import',
             href: '/import',
             icon: Upload,
+            role: 'all',
         },
     ],
 };
@@ -86,6 +97,7 @@ const footerNavItems: NavItem[] = [
         title: 'Documentation',
         href: 'http://localhost/docs/',
         icon: BookOpen,
+        role: 'all',
     },
 ];
 </script>
