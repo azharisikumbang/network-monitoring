@@ -16,10 +16,25 @@ class DatabaseSeeder extends Seeder
     {
         User::factory(100)->create();
 
-        User::factory()->create([
-            'name' => 'administrator',
-            'email' => 'administrator@local.test',
-            'password' => Hash::make('12345678')
+        User::factory()->createMany([
+            [
+                'name' => 'administrator',
+                'email' => 'administrator@local.test',
+                'password' => Hash::make('12345678'),
+                'role' => User::ROLE_ADMINISTRATOR
+            ],
+            [
+                'name' => 'noc',
+                'email' => 'noc@local.test',
+                'password' => Hash::make('12345678'),
+                'role' => User::ROLE_NOC
+            ],
+            [
+                'name' => 'technician',
+                'email' => 'technician@local.test',
+                'password' => Hash::make('12345678'),
+                'role' => User::ROLE_TECHNICIAN
+            ]
         ]);
     }
 }
