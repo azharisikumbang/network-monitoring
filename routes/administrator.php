@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\EnsureUserHasRole;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::middleware([
-    'auth'
+    'auth',
+    'role:administrator'
 ])->group(function () {
+
     Route::resource('users', UserController::class);
 });

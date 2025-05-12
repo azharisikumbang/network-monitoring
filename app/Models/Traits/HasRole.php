@@ -8,7 +8,7 @@ trait HasRole
     const ROLE_NOC = 'noc';
     const ROLE_TECHNICIAN = 'technician';
 
-    public function isAuthozieAs(string $role)
+    public function hasRole(string $role)
     {
         return $this->role == $role;
     }
