@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Network } from 'lucide-vue-next';
 import type { HTMLAttributes } from 'vue';
 
 defineOptions({
@@ -13,19 +14,7 @@ defineProps<Props>();
 </script>
 
 <template>
-    <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" :class="className" v-bind="$attrs">
-        <g id="Layer_2" data-name="Layer 2">
-            <g id="invisible_box" data-name="invisible box">
-                <rect width="40" height="40" fill="none" />
-            </g>
-            <g id="Health_Icons" data-name="Health Icons">
-                <g>
-                    <path
-                        d="M43,4H5A2.9,2.9,0,0,0,2,7V18.9H7.3l1.8-3.7a1.9,1.9,0,0,1,1.8-1.1,2.1,2.1,0,0,1,1.8,1.1l2.9,6.1,4.8-10.2a2,2,0,0,1,3.6,0l3.7,7.8H30a2,2,0,0,1,0,4H26.4a2.2,2.2,0,0,1-1.8-1.2l-2.4-5L17.4,26.9A2.1,2.1,0,0,1,15.6,28a1.9,1.9,0,0,1-1.8-1.1l-2.9-6.1-.5.9a2,2,0,0,1-1.8,1.2H2V35a3,3,0,0,0,3,3H43a3,3,0,0,0,3-3V7A2.9,2.9,0,0,0,43,4ZM29.4,31.4A2,2,0,0,1,28,32H24a2,2,0,0,1-2-2,1.7,1.7,0,0,1,.6-1.4A2,2,0,0,1,24,28h4a2,2,0,0,1,2,2A1.7,1.7,0,0,1,29.4,31.4Zm10,0A2,2,0,0,1,38,32H34a2,2,0,0,1-2-2,1.7,1.7,0,0,1,.6-1.4A2,2,0,0,1,34,28h4a2,2,0,0,1,2,2A1.7,1.7,0,0,1,39.4,31.4Z"
-                    />
-                    <path d="M37,40H11a2,2,0,0,0,0,4H37a2,2,0,0,0,0-4Z" />
-                </g>
-            </g>
-        </g>
-    </svg>
+    <div>
+        <Network class="text-primary h-5 w-5" />
+    </div>
 </template>
