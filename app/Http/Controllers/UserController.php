@@ -27,7 +27,8 @@ class UserController extends Controller
             ;
         })
             ->orderBy('name')
-            ->paginate($request->get('limit') ?? 10, ['name', 'email', 'id']);
+            ->paginate($request->get('limit') ?? 10, ['name', 'email', 'id'])
+            ->withQueryString();
 
         return Inertia::render(
             'users/Index',
