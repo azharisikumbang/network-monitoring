@@ -13,6 +13,14 @@ class BranchSeeder extends Seeder
      */
     public function run(): void
     {
-        Branch::factory(20)->create();
+        $provinces = config('custom.form.provinces');
+
+        foreach ($provinces as $index => $prov)
+        {
+            Branch::factory()->create([
+                'name' => $prov . " - " . ($index + 1),
+                'province' => $prov
+            ]);
+        }
     }
 }
