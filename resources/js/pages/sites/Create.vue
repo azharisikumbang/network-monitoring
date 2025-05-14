@@ -147,12 +147,7 @@ const submit = () => form.post(route('sites.store'));
 
                         <div class="grid gap-2">
                             <Label for="contract_document">Contract/Legal Document (.pdf)</Label>
-                            <Input
-                                id="contract_document"
-                                type="file"
-                                @input="form.contract_document = $event.target.files[0]"
-                                placeholder="contract_document Name"
-                            />
+                            <Input id="contract_document" type="file" @input="form.contract_document = $event.target.files[0]" />
                             <progress v-if="form.progress" :value="form.progress.percentage" max="100">
                                 uploading {{ form.progress.percentage }}%
                             </progress>

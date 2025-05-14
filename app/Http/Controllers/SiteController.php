@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\CreateNewSiteAction;
+use App\Actions\UpdateSiteAction;
 use App\Http\Requests\StoreSiteRequest;
 use App\Http\Requests\UpdateSiteRequest;
 use App\Http\Response\IndexViewDataResponse;
@@ -82,7 +83,10 @@ class SiteController extends Controller
      */
     public function edit(Site $site)
     {
-        //
+        return Inertia::render('sites/Edit', [
+            'site' => $site->toArray(),
+            'branches' => Branch::orderBy('name')->get()->toArray()
+        ]);
     }
 
     /**
@@ -90,7 +94,10 @@ class SiteController extends Controller
      */
     public function update(UpdateSiteRequest $request, Site $site)
     {
-        //
+        (new UpdateSiteAction())->execute($request, $site);
+
+        return to_route('sites.show', $site->id)
+            ->with('success', "Site {$site->name} updated successfully.");
     }
 
     /**
