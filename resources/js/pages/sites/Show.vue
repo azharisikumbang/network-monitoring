@@ -28,6 +28,7 @@ const props = defineProps<{
             name: string;
             province: string;
         };
+        technicians: Array<Object>;
     };
 }>();
 
@@ -112,11 +113,17 @@ const breadcrumbs: BreadcrumbItem[] = [
                         </div>
                         <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                             <dt class="text-sm/6 font-medium text-gray-900">NOC</dt>
-                            <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">-</dd>
+                            <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                {{ site.branch.manager.name }} / {{ site.branch.manager.contact }}
+                            </dd>
                         </div>
                         <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                             <dt class="text-sm/6 font-medium text-gray-900">Technician</dt>
-                            <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">-</dd>
+                            <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                <ol>
+                                    <li v-for="technician in site.branch.technicians">{{ technician.name }} / {{ technician.contact }}</li>
+                                </ol>
+                            </dd>
                         </div>
                     </dl>
                 </div>

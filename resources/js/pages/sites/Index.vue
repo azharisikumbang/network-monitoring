@@ -65,7 +65,7 @@ const closeModal = () => {
 </script>
 
 <template>
-    <Head title="branch Management" />
+    <Head title="Site Management" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="p-4">

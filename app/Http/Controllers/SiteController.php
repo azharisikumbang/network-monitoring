@@ -62,7 +62,7 @@ class SiteController extends Controller
      */
     public function show(Site $site)
     {
-        $site->load('branch');
+        $site->load(['branch.manager', 'branch.technicians']);
 
         return Inertia::render('sites/Show', [
             'site' => $site->toArray()
