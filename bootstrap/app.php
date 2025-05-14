@@ -28,6 +28,9 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
     })
+    ->withProviders([
+        OwenIt\Auditing\AuditingServiceProvider::class,
+    ])
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();

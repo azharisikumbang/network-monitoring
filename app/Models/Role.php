@@ -7,11 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Auditable;
+use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
 
-class Role extends Model
+class Role extends Model implements AuditableContract
 {
     /** @use HasFactory<\Database\Factories\RoleFactory> */
-    use HasFactory, HasUuids, SoftDeletes;
+    use HasFactory, HasUuids, SoftDeletes, Auditable;
 
     const ROLE_ADMINISTRATOR = 'ADMINISTRATOR';
     const ROLE_BRANCH_MANAGER = 'BRANCH_MANAGER';
