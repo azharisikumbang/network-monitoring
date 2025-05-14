@@ -15,11 +15,17 @@ class BranchSeeder extends Seeder
     {
         $provinces = config('custom.form.provinces');
 
-        foreach ($provinces as $index => $prov)
+        foreach ($provinces as $prov)
         {
-            Branch::factory()->create([
-                'name' => $prov . " - " . ($index + 1),
-                'province' => $prov
+            Branch::factory()->createMany([
+                [
+                    'name' => $prov . "-1",
+                    'province' => $prov
+                ],
+                [
+                    'name' => $prov . "-2",
+                    'province' => $prov
+                ]
             ]);
         }
     }

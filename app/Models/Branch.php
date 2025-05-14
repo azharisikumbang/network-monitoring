@@ -36,6 +36,11 @@ class Branch extends Model implements AuditableContract
         return $this->hasMany(User::class, 'branch_id');
     }
 
+    public function sites(): HasMany
+    {
+        return $this->hasMany(Site::class);
+    }
+
     #[Scope]
     protected function active(Builder $query)
     {

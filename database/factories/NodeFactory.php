@@ -17,7 +17,10 @@ class NodeFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'ip_address' => fake()->ipv4(),
+            'network_address' => '24',
+            'type' => array_rand(['MODEM', 'ROUTER', 'ONT', 'OLT', 'ACCESS_POINT']),
+            'description' => fake()->realText()
         ];
     }
 }
