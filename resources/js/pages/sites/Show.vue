@@ -14,6 +14,10 @@ import DialogFooter from '@/components/ui/dialog/DialogFooter.vue';
 import DialogHeader from '@/components/ui/dialog/DialogHeader.vue';
 import DialogTitle from '@/components/ui/dialog/DialogTitle.vue';
 import DialogTrigger from '@/components/ui/dialog/DialogTrigger.vue';
+import Tooltip from '@/components/ui/tooltip/Tooltip.vue';
+import TooltipContent from '@/components/ui/tooltip/TooltipContent.vue';
+import TooltipProvider from '@/components/ui/tooltip/TooltipProvider.vue';
+import TooltipTrigger from '@/components/ui/tooltip/TooltipTrigger.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { SharedData, type BreadcrumbItem } from '@/types';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
@@ -37,6 +41,7 @@ const props = defineProps<{
             province: string;
         };
         technicians: Array<Object>;
+        audits: Array<Object>;
     };
 }>();
 
@@ -153,27 +158,37 @@ const closeModal = () => {
                 </div>
                 <div>
                     <HeadingSmall
-                        title="Site Activities"
+                        title="Site Activities and Logs"
                         description="Shown all administration activies, for site's devices activies you see on monitoring page."
                     />
 
                     <div class="mt-2">
                         <ol class="relative border-s border-gray-200 dark:border-gray-700">
-                            <li class="ms-4 mb-10">
+                            <li class="ms-4 mb-10" v-if="site.audits.length > 0" v-for="(item, index) in site.audits">
                                 <div
                                     class="absolute -start-1.5 mt-1.5 h-3 w-3 rounded-full border border-white bg-gray-200 dark:border-gray-900 dark:bg-gray-700"
                                 ></div>
-                                <time class="mb-1 text-sm leading-none font-normal text-gray-400 dark:text-gray-500">9 Mei 2025</time>
-                                <h3 class="font-medium text-gray-900 dark:text-white">Site information modified.</h3>
-                                <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">Modified from {} to {}</p>
-                            </li>
-                            <li class="ms-4 mb-10">
-                                <div
-                                    class="absolute -start-1.5 mt-1.5 h-3 w-3 rounded-full border border-white bg-gray-200 dark:border-gray-900 dark:bg-gray-700"
-                                ></div>
-                                <time class="mb-1 text-sm leading-none font-normal text-gray-400 dark:text-gray-500">10 Maret 2025</time>
-                                <h3 class="font-medium text-gray-900 dark:text-white">Site Information created.</h3>
-                                <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">Created by adminstrator.</p>
+                                <time class="mb-1 text-sm leading-none font-normal text-gray-400 dark:text-gray-500">{{
+                                    new Date(item.created_at).toLocaleString('id-ID')
+                                }}</time>
+                                <h3 class="font-medium text-gray-900 dark:text-white">
+                                    <TooltipProvider>
+                                        <Tooltip>
+                                            <TooltipTrigger
+                                                ><TextLink href="#">
+                                                    Resource {{ item.event.charAt(0).toUpperCase() + item.event.slice(1) }}
+                                                </TextLink></TooltipTrigger
+                                            >
+                                            <TooltipContent>
+                                                <p>Click to see details</p>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
+                                </h3>
+                                <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">
+                                    Resource was {{ item.event }} by <TextLink href="">{{ item.user.name }}</TextLink> (role:
+                                    {{ item.user.role.as.toLowerCase() }}).
+                                </p>
                             </li>
                         </ol>
                     </div>
