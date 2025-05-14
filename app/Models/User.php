@@ -28,7 +28,8 @@ class User extends Authenticatable
         'password',
         'contact',
         'is_active',
-        'role_id'
+        'role_id',
+        'branch_id'
     ];
 
     /**
@@ -54,9 +55,10 @@ class User extends Authenticatable
         ];
     }
 
-    public function branches(): HasMany
+    public function technicianBranch(): BelongsTo
     {
-        return $this->hasMany(Branch::class, 'pic_');
+        return $this
+            ->belongsTo(Branch::class, 'branch_id');
     }
 
     public function role(): BelongsTo
@@ -68,7 +70,7 @@ class User extends Authenticatable
     {
         if (is_string($role))
         {
-            strtolower($role);
+            $role = strtolower($role);
 
             return strtolower($this->role->name) === $role || $this->role->id === $role;
         }
@@ -79,5 +81,16 @@ class User extends Authenticatable
     public function isAdministrator(): bool
     {
         return $this->hasRole(Role::ROLE_ADMINISTRATOR);
+    }
+
+
+    public function isBranchManger(): bool
+    {
+        return $this->hasRole(Role::ROLE_BRANCH_MANAGER);
+    }
+
+    public function isTechnician(): bool
+    {
+        return $this->hasRole(Role::ROLE_TECHNICIAN);
     }
 }

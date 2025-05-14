@@ -51,7 +51,7 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        if ($role->isAdministrator())
+        if ($role->isCannotDeleted())
             return to_route('roles.index')
                 ->with('error', "You cannot delete role '{$role->name}'. It's default.");
 

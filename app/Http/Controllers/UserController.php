@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Response\IndexViewDataResponse;
+use App\Models\Branch;
+use App\Models\Role;
 use App\Models\User;
 use Hash;
 use Illuminate\Database\Eloquent\Builder;
@@ -26,8 +28,10 @@ class UserController extends Controller
                 ->orWhereLike('email', $search)
             ;
         })
+
             ->orderBy('name')
-            ->paginate($request->get('limit') ?? 10, ['name', 'email', 'id'])
+            ->with('technicianBranch')
+            ->paginate($request->get('limit') ?? 10)
             ->withQueryString();
 
         return Inertia::render(
@@ -41,7 +45,13 @@ class UserController extends Controller
      */
     public function create()
     {
-        return Inertia::render('users/Create');
+        return Inertia::render('users/Create', [
+            'roles' => Role::orderBy('name')->get()->toArray(),
+            'branches' => Branch::active()
+                ->orderBy('name')
+                ->get(['id', 'name'])
+                ->toArray()
+        ]);
     }
 
     /**
@@ -53,6 +63,9 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role_id' => $request->role_id,
+            'branch_id' => $request->branch_id,
+            'contact' => $request->contact
         ]);
 
         return to_route('users.index')
@@ -75,7 +88,8 @@ class UserController extends Controller
         return Inertia::render("users/Edit", [
             'id' => $user->id,
             'name' => $user->name,
-            'email' => $user->email
+            'email' => $user->email,
+            'contact' => $user->contact
         ]);
     }
 
@@ -96,6 +110,13 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        if ($user->isAdministrator())
+            return to_route('users.index')
+                ->with('error', "You cannot delete user with role '{$user->role->name}'.");
+
+        dd($user->delete());
+
+        return to_route('users.index')
+            ->with('success', "User deleted succesfully.");
     }
 }

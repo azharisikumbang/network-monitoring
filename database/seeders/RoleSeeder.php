@@ -13,9 +13,19 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        Role::factory()->create([
-            'name' => Role::ROLE_ADMINISTRATOR,
-            'as' => ucfirst(Role::ROLE_ADMINISTRATOR)
+        Role::factory()->createMany([
+            [
+                'name' => Role::ROLE_ADMINISTRATOR,
+                'as' => ucfirst(Role::ROLE_ADMINISTRATOR),
+            ],
+            [
+                'name' => Role::ROLE_BRANCH_MANAGER,
+                'as' => ucfirst(Role::ROLE_BRANCH_MANAGER),
+            ],
+            [
+                'name' => Role::ROLE_TECHNICIAN,
+                'as' => ucfirst(Role::ROLE_TECHNICIAN),
+            ]
         ]);
     }
 }

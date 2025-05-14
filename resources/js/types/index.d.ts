@@ -83,6 +83,8 @@ export interface ViewIndexData {
     data: PaginationType;
     flash: {
         success: any;
+        error: any;
+        message: any;
     };
 }
 
@@ -90,6 +92,7 @@ export interface UserEditForm {
     id: int;
     email: string;
     name: string;
+    contact: string;
 }
 
 export type BreadcrumbItemType = BreadcrumbItem;

@@ -38,9 +38,6 @@ class IndexViewDataResponse implements IndexViewDataInterface
             'params' => [
                 'search' => $this->getSearch(),
                 'limit' => $this->getLimit()
-            ],
-            'flash' => [
-                'success' => $this->request->session()->get('success') ?? null
             ]
         ];
     }

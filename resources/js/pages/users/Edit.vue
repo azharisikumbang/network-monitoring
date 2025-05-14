@@ -24,6 +24,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const form = useForm({
     name: props.name,
+    contact: props.contact,
 });
 
 const submit = () => form.put(route('users.update', { id: props.id }));
@@ -55,6 +56,21 @@ const submit = () => form.put(route('users.update', { id: props.id }));
                                 placeholder="Full name"
                             />
                             <InputError :message="form.errors.name" />
+                        </div>
+
+                        <div class="grid gap-2">
+                            <Label for="contact">Contact / Phone Number / Whatsapp</Label>
+                            <Input
+                                id="contact"
+                                type="text"
+                                required
+                                autofocus
+                                :tabindex="1"
+                                autocomplete="contact"
+                                v-model="form.contact"
+                                placeholder="Contact"
+                            />
+                            <InputError :message="form.errors.contact" />
                         </div>
 
                         <div>

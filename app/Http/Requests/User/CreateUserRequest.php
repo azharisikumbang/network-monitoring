@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\User;
 
+use App\Models\Branch;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules;
@@ -13,8 +15,7 @@ class CreateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // TODO: change the check to role only administrator
-        return auth()->check();
+        return auth()->user()->isAdministrator();
     }
 
     /**
@@ -26,8 +27,11 @@ class CreateUserRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
+            'contact' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role_id' => ['required', 'exists:' . Role::class . ',id'],
+            'branch_id' => ['present', 'nullable', 'exists:' . Branch::class . ',id']
         ];
     }
 }

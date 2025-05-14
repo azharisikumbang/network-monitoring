@@ -4,9 +4,9 @@ namespace App\Models\Traits;
 
 trait HasRole
 {
-    const ROLE_ADMINISTRATOR = 'administrator';
-    const ROLE_NOC = 'noc';
-    const ROLE_TECHNICIAN = 'technician';
+    const ROLE_ADMINISTRATOR = 'ADMINSITRATOR';
+    const ROLE_BRANCH_MANAGER = 'BRANCH_MANAGER';
+    const ROLE_TECHNICIAN = 'TECHNICIAN';
 
     public function hasRole(string $role)
     {
@@ -18,9 +18,9 @@ trait HasRole
         return $this->role === self::ROLE_ADMINISTRATOR;
     }
 
-    public function isNOC(): bool
+    public function isBranchManger(): bool
     {
-        return $this->role === self::ROLE_NOC;
+        return $this->role === self::ROLE_BRANCH_MANAGER;
     }
 
     public function isTechnician(): bool

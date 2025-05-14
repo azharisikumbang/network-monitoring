@@ -1,5 +1,11 @@
 <script setup lang="ts">
+import ButtonLink from '@/components/ButtonLink.vue';
+import InputError from '@/components/InputError.vue';
+import Alert from '@/components/ui/alert/Alert.vue';
+import AlertDescription from '@/components/ui/alert/AlertDescription.vue';
+import AlertTitle from '@/components/ui/alert/AlertTitle.vue';
 import { Button } from '@/components/ui/button';
+import ButtonEdit from '@/components/ui/button/ButtonEdit.vue';
 import Dialog from '@/components/ui/dialog/Dialog.vue';
 import DialogContent from '@/components/ui/dialog/DialogContent.vue';
 import DialogDescription from '@/components/ui/dialog/DialogDescription.vue';
@@ -17,13 +23,8 @@ import TableRow from '@/components/ui/table/TableRow.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { ViewIndexData, type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/vue3';
-import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-vue-next';
+import { ChevronLeftIcon, ChevronRightIcon, LoaderCircle } from 'lucide-vue-next';
 import { DialogClose } from 'reka-ui';
-import ButtonLink from '@/components/ButtonLink.vue';
-import ButtonEdit from '@/components/ui/button/ButtonEdit.vue';
-import Alert from '@/components/ui/alert/Alert.vue';
-import AlertTitle from '@/components/ui/alert/AlertTitle.vue';
-import AlertDescription from '@/components/ui/alert/AlertDescription.vue';
 
 const props = defineProps<ViewIndexData>();
 
@@ -44,6 +45,24 @@ const formLimit = useForm({
 
 const submit = () => form.get(route('users.index'));
 const changePageLimit = () => formLimit.get(route('users.index'));
+
+const formDelete = useForm({});
+
+const applyDelete = (e: Event, id: string) => {
+    e.preventDefault();
+
+    formDelete.delete(route('users.destroy', id), {
+        preserveScroll: true,
+        onError: (e) => console.log(e),
+        onFinish: () => form.clearErrors(),
+        onSuccess: () => closeModal(),
+    });
+};
+
+const closeModal = () => {
+    formDelete.clearErrors();
+    formDelete.reset();
+};
 </script>
 
 <template>
@@ -51,10 +70,17 @@ const changePageLimit = () => formLimit.get(route('users.index'));
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="p-4">
-            <div class="mb-4" v-if="flash.success">
+            <div class="mb-4" v-if="$page.props.flash.success">
                 <Alert variant="success">
                     <AlertTitle>Success !</AlertTitle>
-                    <AlertDescription>{{ flash.success }}</AlertDescription>
+                    <AlertDescription>{{ $page.props.flash.success }}</AlertDescription>
+                </Alert>
+            </div>
+
+            <div class="mb-4" v-if="$page.props.flash.error">
+                <Alert variant="destructive" class="border-red-500">
+                    <AlertTitle>Something went wrong !</AlertTitle>
+                    <AlertDescription>{{ $page.props.flash.error }}</AlertDescription>
                 </Alert>
             </div>
 
@@ -89,8 +115,11 @@ const changePageLimit = () => formLimit.get(route('users.index'));
                         <TableCell class="text-center">{{ index + 1 }}</TableCell>
                         <TableCell class="font-semibold">{{ user.name }}</TableCell>
                         <TableCell>{{ user.email }}</TableCell>
-                        <TableCell>x</TableCell>
-                        <TableCell>y</TableCell>
+                        <TableCell>{{ user.contact }}</TableCell>
+                        <TableCell>
+                            {{ user.role.as }}
+                            <span v-if="user.technician_branch">({{ user.technician_branch?.name }}) </span>
+                        </TableCell>
                         <TableCell class="text-right">
                             <div class="flex justify-end gap-2">
                                 <ButtonEdit :href="route('users.edit', { id: user.id })">
@@ -103,7 +132,7 @@ const changePageLimit = () => formLimit.get(route('users.index'));
                                         </Button>
                                     </DialogTrigger>
                                     <DialogContent>
-                                        <form class="space-y-6" @submit="">
+                                        <form class="space-y-6" @submit="applyDelete($event, user.id)">
                                             <DialogHeader class="space-y-3">
                                                 <DialogTitle>Are you sure you want to delete this account?</DialogTitle>
                                                 <DialogDescription>
@@ -113,12 +142,10 @@ const changePageLimit = () => formLimit.get(route('users.index'));
 
                                             <DialogFooter class="gap-2">
                                                 <DialogClose as-child>
-                                                    <Button variant="secondary"> Cancel </Button>
+                                                    <Button variant="secondary" @click="closeModal"> Cancel </Button>
                                                 </DialogClose>
 
-                                                <Button variant="destructive">
-                                                    <button type="submit">Delete account</button>
-                                                </Button>
+                                                <Button type="submit" variant="destructive">Delete account</Button>
                                             </DialogFooter>
                                         </form>
                                     </DialogContent>

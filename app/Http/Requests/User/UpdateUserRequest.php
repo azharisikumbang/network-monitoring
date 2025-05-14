@@ -12,7 +12,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->check();
+        return auth()->user()->isAdministrator();
     }
 
     /**
@@ -24,6 +24,7 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
+            'contact' => 'required|string|max:255',
         ];
     }
 }

@@ -35,6 +35,7 @@ defineProps<{
         id: string;
         name: string;
         as: string;
+        default: boolean;
     }>;
 }>();
 
@@ -135,7 +136,7 @@ const closeModal = () => {
                                         <Button variant="outline" @click="applyEdit(item.id, item.name, item.as)">
                                             <span class="hidden sm:block">Edit</span>
                                         </Button>
-                                        <Dialog>
+                                        <Dialog v-if="!item.default">
                                             <DialogTrigger as-child>
                                                 <Button class="hover:bg-red-700 hover:text-white" variant="outline">
                                                     <span class="hidden sm:block">Delete</span>

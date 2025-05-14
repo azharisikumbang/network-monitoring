@@ -13,10 +13,13 @@ class Role extends Model
     use HasFactory, HasUuids;
 
     const ROLE_ADMINISTRATOR = 'ADMINISTRATOR';
+    const ROLE_BRANCH_MANAGER = 'BRANCH_MANAGER';
+    const ROLE_TECHNICIAN = 'TECHNICIAN';
 
     protected $fillable = [
         'name',
-        'as'
+        'as',
+        'default'
     ];
 
     public function users(): HasMany
@@ -24,8 +27,8 @@ class Role extends Model
         return $this->hasMany(User::class);
     }
 
-    public function isAdministrator(): bool
+    public function isCannotDeleted(): bool
     {
-        return strtoupper($this->name) == self::ROLE_ADMINISTRATOR;
+        return $this->default;
     }
 }
