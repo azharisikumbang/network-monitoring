@@ -42,6 +42,7 @@ const props = defineProps<{
         };
         technicians: Array<Object>;
         audits: Array<Object>;
+        deleted_at: string | null;
     };
 }>();
 
@@ -51,7 +52,7 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/sites',
     },
     {
-        title: 'Site Details',
+        title: 'Site Detail',
         href: '/sites/sites/' + props.site.id,
     },
 ];
@@ -74,7 +75,7 @@ const closeModal = () => {
 </script>
 
 <template>
-    <Head title="branch Management" />
+    <Head title="Site Management" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="p-4">
@@ -122,9 +123,15 @@ const closeModal = () => {
                                 <a
                                     class="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
                                     :href="route('sites.contract_document.download', { site: site.id })"
+                                    v-if="site.contract_document"
                                 >
                                     Download ({{ site.contract_document }})
                                 </a>
+                                <span v-else class="italic">
+                                    No document.
+
+                                    <TextLink href="#">Upload here.</TextLink>
+                                </span>
                             </dd>
                         </div>
                     </dl>
@@ -190,14 +197,16 @@ const closeModal = () => {
                                     {{ item.user.role.as.toLowerCase() }}).
                                 </p>
                             </li>
+                            <li class="text-base text-gray-500 italic" v-else>No activity was logged.</li>
                         </ol>
                     </div>
                 </div>
             </div>
 
-            <div class="mt-8 flex gap-2">
-                <ButtonLink variant="outline" :href="route('sites.edit', site.id)">Edit Site Information</ButtonLink>
-                <ButtonLink variant="outline" href="">Add new device</ButtonLink>
+            <div class="mt-8 flex gap-2 border-t pt-8" v-if="site.deleted_at == null">
+                <ButtonLink class="bg-yellow-500 hover:bg-yellow-500/90" :href="route('sites.edit', site.id)">Edit Site Information</ButtonLink>
+                <ButtonLink href="">Add New Device</ButtonLink>
+                <ButtonLink href="">Add New PIC Contact</ButtonLink>
                 <Dialog>
                     <DialogTrigger as-child>
                         <Button variant="destructive">
@@ -226,6 +235,14 @@ const closeModal = () => {
                         </form>
                     </DialogContent>
                 </Dialog>
+            </div>
+
+            <div class="mt-8 flex gap-2 border-t pt-8" v-else>
+                <form class="space-y-6" @submit="">
+                    <Button variant="destructive">
+                        <button type="submit">Restore Site</button>
+                    </Button>
+                </form>
             </div>
         </div>
     </AppLayout>

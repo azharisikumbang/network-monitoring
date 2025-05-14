@@ -16,7 +16,7 @@ Route::middleware([
 
     Route::resource('users', UserController::class);
     Route::resource('branches', BranchController::class);
-    Route::resource('sites', SiteController::class);
+    Route::resource('sites', SiteController::class)->withTrashed(['show']);
     Route::resource('nodes', NodeController::class);
     Route::resource('roles', RoleController::class)->only('index', 'store', 'destroy');
 
