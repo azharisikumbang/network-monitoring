@@ -16,7 +16,6 @@ return new class extends Migration {
             $table->string('province')->nullable();
             $table->string('city')->nullable();
             $table->boolean('is_active')->default(true);
-            // $table->foreignUuid('pic_id')->constrained('users');
             $table->timestamps();
         });
     }

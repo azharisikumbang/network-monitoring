@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Branch;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreBranchRequest extends FormRequest
@@ -26,6 +27,7 @@ class StoreBranchRequest extends FormRequest
             'name' => ['required', 'string', 'unique:' . Branch::class],
             'province' => ['required', 'string'],
             'city' => ['required', 'string'],
+            'manager_id' => ['required', 'string', 'exists:' . User::class . ',id']
         ];
     }
 }

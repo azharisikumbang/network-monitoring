@@ -97,7 +97,7 @@ const closeModal = () => {
                         <TableHead class="w-[20px] text-center"> No </TableHead>
                         <TableHead>Branch Name</TableHead>
                         <TableHead>Location</TableHead>
-                        <TableHead>PIC Name</TableHead>
+                        <TableHead>Manager</TableHead>
                         <TableHead class="text-right">Action</TableHead>
                     </TableRow>
                 </TableHeader>
@@ -106,9 +106,12 @@ const closeModal = () => {
                         <TableCell class="text-center">{{ index + 1 }}</TableCell>
                         <TableCell class="font-semibold">{{ item.name }}</TableCell>
                         <TableCell>{{ item.city }}, {{ item.province }}</TableCell>
-                        <TableCell>-</TableCell>
+                        <TableCell>{{ item.manager.name }} / {{ item.manager.contact }}</TableCell>
                         <TableCell class="text-right">
                             <div class="flex justify-end gap-2">
+                                <Button variant="outline" as="a" :href="route('branches.edit', { id: item.id })">
+                                    <span class="hidden sm:block">Add Technician</span>
+                                </Button as="a">
                                 <ButtonEdit :href="route('branches.edit', { id: item.id })">
                                     <span class="hidden sm:block">Edit</span>
                                 </ButtonEdit>

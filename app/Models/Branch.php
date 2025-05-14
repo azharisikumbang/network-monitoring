@@ -18,12 +18,13 @@ class Branch extends Model
         'name',
         'province',
         'city',
-        'is_active'
+        'is_active',
+        'manager_id'
     ];
 
-    public function pic(): BelongsTo
+    public function manager(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'pic_id');
+        return $this->belongsTo(User::class, 'manager_id');
     }
 
     #[Scope]

@@ -10,6 +10,14 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
 
+defineProps<{
+    managers: Array<{
+        id: string;
+        name: string;
+        contact: string;
+    }>;
+}>();
+
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Branch Management',
@@ -25,6 +33,7 @@ const form = useForm({
     name: '',
     province: '',
     city: '',
+    manager_id: '',
 });
 
 const submit = () => form.post(route('branches.store'));
@@ -77,6 +86,18 @@ const submit = () => form.post(route('branches.store'));
                                 placeholder="City Name"
                             />
                             <InputError :message="form.errors.city" />
+                        </div>
+
+                        <div class="grid gap-2">
+                            <Label for="name">Branch Manager</Label>
+                            <small class="text-gray-500">All sites and devices that attached to this branch will managed by this users.</small>
+                            <Select v-model="form.manager_id" required>
+                                <option value="" disabled selected>-- Select Branch Manager --</option>
+                                <template v-for="(item, index) in managers">
+                                    <option :value="item.id">{{ item.name }} - {{ item.contact }}</option>
+                                </template>
+                            </Select>
+                            <InputError :message="form.errors.manager_id" />
                         </div>
 
                         <div>

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Observers\UserObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -55,10 +57,24 @@ class User extends Authenticatable
         ];
     }
 
+    #[Scope]
+    protected function manager(Builder $query)
+    {
+        $query->where(
+            'role_id',
+            Role::where('name', Role::ROLE_BRANCH_MANAGER)->first()->id
+        );
+    }
+
     public function technicianBranch(): BelongsTo
     {
         return $this
             ->belongsTo(Branch::class, 'branch_id');
+    }
+
+    public function branches(): HasMany
+    {
+        return $this->hasMany(Branch::class, 'manager_id');
     }
 
     public function role(): BelongsTo

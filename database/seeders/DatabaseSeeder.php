@@ -26,6 +26,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // branches
-        $this->call(BranchSeeder::class);
+        // $this->call(BranchSeeder::class);
     }
 }

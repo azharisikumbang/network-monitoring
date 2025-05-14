@@ -6,6 +6,7 @@ use App\Http\Requests\StoreBranchRequest;
 use App\Http\Requests\UpdateBranchRequest;
 use App\Http\Response\IndexViewDataResponse;
 use App\Models\Branch;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -22,7 +23,7 @@ class BranchController extends Controller
 
             return $model->whereLike('name', $search);
         })
-            ->with('pic')
+            ->with('manager')
             ->orderBy('name')
             ->paginate($request->get('limit') ?? 10)
             ->withQueryString();
@@ -38,7 +39,11 @@ class BranchController extends Controller
      */
     public function create()
     {
-        return Inertia::render('branches/Create');
+        $managers = User::manager()->get(['id', 'name', 'contact']);
+
+        return Inertia::render('branches/Create', [
+            'managers' => $managers->toArray()
+        ]);
     }
 
     /**
@@ -46,11 +51,7 @@ class BranchController extends Controller
      */
     public function store(StoreBranchRequest $request)
     {
-        $branch = Branch::create([
-            'name' => $request->name,
-            'province' => $request->province,
-            'city' => $request->city,
-        ]);
+        $branch = Branch::create($request->validated());
 
         return to_route('branches.index')
             ->with('success', "Branch '{$branch->name}' created succeesfully.");
