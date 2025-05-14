@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Role;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Hash;
@@ -14,27 +15,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(100)->create();
 
-        User::factory()->createMany([
-            [
-                'name' => 'administrator',
-                'email' => 'administrator@local.test',
-                'password' => Hash::make('12345678'),
-                'role' => User::ROLE_ADMINISTRATOR
-            ],
-            [
-                'name' => 'noc',
-                'email' => 'noc@local.test',
-                'password' => Hash::make('12345678'),
-                'role' => User::ROLE_NOC
-            ],
-            [
-                'name' => 'technician',
-                'email' => 'technician@local.test',
-                'password' => Hash::make('12345678'),
-                'role' => User::ROLE_TECHNICIAN
-            ]
+        $this->call(RoleSeeder::class);
+
+        $administrator = Role::where('name', Role::ROLE_ADMINISTRATOR)->first();
+        $administrator->users()->create([
+            'name' => 'administrator',
+            'email' => 'administrator@local.test',
+            'password' => Hash::make('12345678')
         ]);
 
         // branches

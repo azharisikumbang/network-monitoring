@@ -11,7 +11,7 @@ const checkMenuRole = (role: string) => {
     if (page.props.auth.user == null || page.props.auth.user == undefined) return false;
     if (role == 'all') return true;
 
-    return page.props.auth.user.role == role;
+    return page.props.auth.user.role.name.toLowerCase() == role;
 };
 </script>
 

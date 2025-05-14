@@ -2,18 +2,20 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Models\Traits\HasRole;
+use App\Observers\UserObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+#[ObservedBy(UserObserver::class)]
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRole, HasUuids;
+    use HasFactory, Notifiable, HasUuids;
 
     /**
      * The attributes that are mass assignable.
@@ -25,7 +27,8 @@ class User extends Authenticatable
         'email',
         'password',
         'contact',
-        'is_active'
+        'is_active',
+        'role_id'
     ];
 
     /**
@@ -54,5 +57,27 @@ class User extends Authenticatable
     public function branches(): HasMany
     {
         return $this->hasMany(Branch::class, 'pic_');
+    }
+
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function hasRole(string|Role $role): bool
+    {
+        if (is_string($role))
+        {
+            strtolower($role);
+
+            return strtolower($this->role->name) === $role || $this->role->id === $role;
+        }
+
+        return $this->role->id == $role->id;
+    }
+
+    public function isAdministrator(): bool
+    {
+        return $this->hasRole(Role::ROLE_ADMINISTRATOR);
     }
 }

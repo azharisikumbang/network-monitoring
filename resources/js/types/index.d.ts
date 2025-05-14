@@ -33,6 +33,7 @@ export interface SharedData extends PageProps {
     flash: {
         success: string | null;
         message: string | null;
+        error: string | null;
     };
 }
 
@@ -44,6 +45,12 @@ export interface User {
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;
+    role: {
+        id: string;
+        name: string;
+        as: string;
+    };
+    role_id: string;
 }
 
 export interface PaginationType {

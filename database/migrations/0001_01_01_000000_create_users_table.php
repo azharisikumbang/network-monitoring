@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->string('password');
             $table->string('contact')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->foreignUuid('role_id');
             $table->rememberToken();
             $table->timestamps();
         });
