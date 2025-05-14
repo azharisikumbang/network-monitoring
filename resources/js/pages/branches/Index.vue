@@ -62,6 +62,18 @@ const closeModal = () => {
     formDelete.clearErrors();
     formDelete.reset();
 };
+
+const orderTable = (elem: string) => {
+    props.data.data = [...props.data.data].sort((a, b) => {
+        if ( a[elem] < b[elem] ){
+            return -1;
+        }
+        if ( a[elem] > b[elem] ){
+            return 1;
+        }
+        return 0;
+    });
+}
 </script>
 
 <template>
@@ -95,9 +107,9 @@ const closeModal = () => {
                 <TableHeader>
                     <TableRow>
                         <TableHead class="w-[20px] text-center"> No </TableHead>
-                        <TableHead>Branch Name</TableHead>
-                        <TableHead>Location</TableHead>
-                        <TableHead>Manager</TableHead>
+                        <TableHead class="cursor-pointer" @click="orderTable('name')">Branch Name</TableHead>
+                        <TableHead class="cursor-pointer" @click="orderTable('city')">Location</TableHead>
+                        <TableHead >Manager</TableHead>
                         <TableHead class="text-right">Action</TableHead>
                     </TableRow>
                 </TableHeader>
