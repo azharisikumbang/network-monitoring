@@ -6,9 +6,17 @@ import Alert from '@/components/ui/alert/Alert.vue';
 import AlertDescription from '@/components/ui/alert/AlertDescription.vue';
 import AlertTitle from '@/components/ui/alert/AlertTitle.vue';
 import Button from '@/components/ui/button/Button.vue';
+import Dialog from '@/components/ui/dialog/Dialog.vue';
+import DialogClose from '@/components/ui/dialog/DialogClose.vue';
+import DialogContent from '@/components/ui/dialog/DialogContent.vue';
+import DialogDescription from '@/components/ui/dialog/DialogDescription.vue';
+import DialogFooter from '@/components/ui/dialog/DialogFooter.vue';
+import DialogHeader from '@/components/ui/dialog/DialogHeader.vue';
+import DialogTitle from '@/components/ui/dialog/DialogTitle.vue';
+import DialogTrigger from '@/components/ui/dialog/DialogTrigger.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { SharedData, type BreadcrumbItem } from '@/types';
-import { Head, usePage } from '@inertiajs/vue3';
+import { Head, useForm, usePage } from '@inertiajs/vue3';
 
 const page = usePage<SharedData>();
 const props = defineProps<{
@@ -42,6 +50,22 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/sites/sites/' + props.site.id,
     },
 ];
+
+const formDeactivate = useForm({});
+
+const applyDeactivate = (e: Event, id: string) => {
+    e.preventDefault();
+
+    formDeactivate.delete(route('sites.destroy', id), {
+        onFinish: () => formDeactivate.clearErrors(),
+        onSuccess: () => closeModal(),
+    });
+};
+
+const closeModal = () => {
+    formDeactivate.clearErrors();
+    formDeactivate.reset();
+};
 </script>
 
 <template>
@@ -159,7 +183,34 @@ const breadcrumbs: BreadcrumbItem[] = [
             <div class="mt-8 flex gap-2">
                 <ButtonLink variant="outline" :href="route('sites.edit', site.id)">Edit Site Information</ButtonLink>
                 <ButtonLink variant="outline" href="">Add new device</ButtonLink>
-                <Button variant="destructive">Deactivate Site</Button>
+                <Dialog>
+                    <DialogTrigger as-child>
+                        <Button variant="destructive">
+                            <span class="hidden sm:block">Deactivate Site</span>
+                        </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <form class="space-y-6" @submit="applyDeactivate($event, site.id)">
+                            <DialogHeader class="space-y-3">
+                                <DialogTitle>Are you sure you want to deactivate this site?</DialogTitle>
+                                <DialogDescription>
+                                    Deactivate this site will make its not available for monitoring or reporting. Its just available as an archieves.
+                                    You can check it later on menu 'Archives'.
+                                </DialogDescription>
+                            </DialogHeader>
+
+                            <DialogFooter class="gap-2">
+                                <DialogClose as-child>
+                                    <Button variant="secondary" @click="closeModal"> Cancel </Button>
+                                </DialogClose>
+
+                                <Button variant="destructive">
+                                    <button type="submit">Deactivate Now</button>
+                                </Button>
+                            </DialogFooter>
+                        </form>
+                    </DialogContent>
+                </Dialog>
             </div>
         </div>
     </AppLayout>

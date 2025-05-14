@@ -26,6 +26,14 @@ class SiteController extends Controller
                 ->whereLike('name', $search)
                 ->orWhereLike('terminal_id', $search);
         })
+            ->when($request->get('filter'), function (Builder $model) use ($request) {
+                return match ($request->get('filter'))
+                {
+                    'deactivated' => $model->onlyTrashed(),
+                    'all' => $model->withTrashed(),
+                    default => $model
+                };
+            })
             ->orderBy('name')
             ->paginate($request->get('limit') ?? 10)
             ->withQueryString();
@@ -90,6 +98,9 @@ class SiteController extends Controller
      */
     public function destroy(Site $site)
     {
-        //
+        $site->delete();
+
+        return to_route('sites.index')
+            ->with('success', "Site status for {$site->name} was deactivated.");
     }
 }

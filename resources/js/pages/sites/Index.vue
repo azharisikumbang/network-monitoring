@@ -14,6 +14,7 @@ import DialogHeader from '@/components/ui/dialog/DialogHeader.vue';
 import DialogTitle from '@/components/ui/dialog/DialogTitle.vue';
 import DialogTrigger from '@/components/ui/dialog/DialogTrigger.vue';
 import { Input } from '@/components/ui/input';
+import Select from '@/components/ui/input/Select.vue';
 import Table from '@/components/ui/table/Table.vue';
 import TableBody from '@/components/ui/table/TableBody.vue';
 import TableCell from '@/components/ui/table/TableCell.vue';
@@ -39,12 +40,13 @@ const form = useForm({
     search: props.params.search,
 });
 
-const formLimit = useForm({
+const formQuery = useForm({
     limit: props.params.limit,
+    filter: props.params.filter,
 });
 
 const submit = () => form.get(route('sites.index'));
-const changePageLimit = () => formLimit.get(route('sites.index'));
+const applyQuery = () => formQuery.get(route('sites.index'));
 
 const formDelete = useForm({});
 
@@ -76,7 +78,7 @@ const closeModal = () => {
                 </Alert>
             </div>
 
-            <div class="flex justify-between">
+            <div class="flex items-center justify-between">
                 <form @submit.prevent="submit">
                     <div class="flex gap-1">
                         <Input type="text" required autofocus :tabindex="1" v-model="form.search" placeholder="Type and enter to search.." />
@@ -89,7 +91,17 @@ const closeModal = () => {
                     </div>
                 </form>
 
-                <ButtonLink :href="route('sites.create')">Create New Site</ButtonLink>
+                <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-2">
+                        <div class="w-32">Show Only</div>
+                        <Select v-model="formQuery.filter" @change="applyQuery">
+                            <option value="">-- Site Active --</option>
+                            <option value="deactivated">-- Site Deactivated --</option>
+                            <option value="all">-- All Site --</option>
+                        </Select>
+                    </div>
+                    <ButtonLink :href="route('sites.create')">Create New Site</ButtonLink>
+                </div>
             </div>
             <Table class="my-4 rounded-lg border p-8">
                 <TableHeader>
@@ -154,7 +166,7 @@ const closeModal = () => {
             <div class="mt-2 flex items-center justify-between">
                 <div class="flex items-center gap-2 text-sm">
                     Shown
-                    <select v-model="formLimit.limit" @change="changePageLimit" class="cursor-pointer">
+                    <select v-model="formQuery.limit" @change="applyQuery" class="cursor-pointer">
                         <option value="10">10</option>
                         <option value="15">15</option>
                         <option value="25">25</option>

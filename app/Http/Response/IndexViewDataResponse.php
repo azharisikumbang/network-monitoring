@@ -10,6 +10,7 @@ class IndexViewDataResponse implements IndexViewDataInterface
 {
     const QUERY_SEARCH = "search";
     const QUERY_LIMIT = 'limit';
+    const QUERY_FILTER = 'filter';
 
     public function __construct(
         private readonly LengthAwarePaginator $data,
@@ -26,6 +27,10 @@ class IndexViewDataResponse implements IndexViewDataInterface
     {
         return $this->request->get(self::QUERY_SEARCH) ?? '';
     }
+    public function getFilter(): string
+    {
+        return $this->request->get(self::QUERY_FILTER) ?? '';
+    }
     public function getLimit(): int
     {
         return $this->request->get(self::QUERY_LIMIT) ?? 10;
@@ -37,7 +42,8 @@ class IndexViewDataResponse implements IndexViewDataInterface
             'data' => $this->getData()->toArray(),
             'params' => [
                 'search' => $this->getSearch(),
-                'limit' => $this->getLimit()
+                'limit' => $this->getLimit(),
+                'filter' => $this->getFilter()
             ]
         ];
     }

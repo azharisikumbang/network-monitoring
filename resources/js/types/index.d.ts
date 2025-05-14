@@ -79,6 +79,7 @@ export interface ViewIndexData {
     params: {
         search: string | undefined;
         limit: number;
+        filter: string | undefined;
     };
     data: PaginationType;
     flash: {

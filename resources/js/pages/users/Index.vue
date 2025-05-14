@@ -63,6 +63,7 @@ const closeModal = () => {
     formDelete.clearErrors();
     formDelete.reset();
 };
+
 </script>
 
 <template>
@@ -125,7 +126,7 @@ const closeModal = () => {
                                 <ButtonEdit :href="route('users.edit', { id: user.id })">
                                     <span class="hidden sm:block">Edit</span>
                                 </ButtonEdit>
-                                <Dialog>
+                                <Dialog v-model="open">
                                     <DialogTrigger as-child>
                                         <Button class="hover:bg-red-700 hover:text-white" variant="outline">
                                             <span class="hidden sm:block">Delete</span>

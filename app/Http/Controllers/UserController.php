@@ -114,7 +114,7 @@ class UserController extends Controller
             return to_route('users.index')
                 ->with('error', "You cannot delete user with role '{$user->role->name}'.");
 
-        dd($user->delete());
+        $user->delete();
 
         return to_route('users.index')
             ->with('success', "User deleted succesfully.");
