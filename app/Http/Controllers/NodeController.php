@@ -33,7 +33,7 @@ class NodeController extends Controller
 
         return Inertia::render(
             'nodes/Index',
-            new IndexViewDataResponse($items, $request)->toArray()
+            (new IndexViewDataResponse($items, $request))->toArray()
         );
     }
 

@@ -30,7 +30,7 @@ class BranchController extends Controller
 
         return Inertia::render(
             'branches/Index',
-            new IndexViewDataResponse($users, $request)->toArray()
+            (new IndexViewDataResponse($users, $request))->toArray()
         );
     }
 

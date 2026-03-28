@@ -41,7 +41,7 @@ class SiteController extends Controller
 
         return Inertia::render(
             'sites/Index',
-            new IndexViewDataResponse($items, $request)->toArray()
+            (new IndexViewDataResponse($items, $request))->toArray()
         );
     }
 

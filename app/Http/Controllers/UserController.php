@@ -36,7 +36,7 @@ class UserController extends Controller
 
         return Inertia::render(
             'users/Index',
-            new IndexViewDataResponse($users, $request)->toArray()
+            (new IndexViewDataResponse($users, $request))->toArray()
         );
     }
 

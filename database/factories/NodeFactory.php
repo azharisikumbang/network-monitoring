@@ -18,9 +18,9 @@ class NodeFactory extends Factory
     {
         return [
             'ip_address' => fake()->ipv4(),
-            'network_address' => '24',
+            'network_address' => '255.255.255.0',
             'type' => array_rand(['MODEM', 'ROUTER', 'ONT', 'OLT', 'ACCESS_POINT']),
-            'description' => fake()->realText()
+            'description' => fake()->paragraph()
         ];
     }
 }
